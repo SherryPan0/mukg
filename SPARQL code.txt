@@ -1,0 +1,105 @@
+Test case 1 SPARQL Query
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX drugbank: <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/>
+PREFIX dc: <http://purl.org/dc/1.1#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX dbpedia3: <http://dbpedia.org/property/>
+PREFIX owl: <http://www.w3.org/2002/07/owl#> 
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+PREFIX pubmed: <http://linkedlifedata.com/resource/pubmed/> 
+PREFIX ctec: <http://eurecaproject.eu/ctec/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX mukg: <http://ztonebv.com/MUKG#>
+PREFIX meshv: <http://id.nlm.nih.gov/mesh/vocab#>
+PREFIX mesh: <http://id.nlm.nih.gov/mesh/>
+
+SELECT   DISTINCT  ?g ?cuiG ?m
+WHERE{
+{?s1 	mukg:hasNeurotransmitter mukg:Serotonin;
+       		mukg:hasGutMicrobiota ?g;
+        		mukg:hasModulateType ?m.
+?g  	umls:cui ?cuiG}
+FILTER EXISTS
+{?s2 	mukg:hasNeurotransmitter mukg:Dopamine;
+        		mukg:hasGutMicrobiota ?g;
+        		mukg:hasModulateType ?m.}
+}
+
+Test Case 2 SPARQL Query
+PREFIX mesh2020: <http://id.nlm.nih.gov/mesh/2020/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX mukg: <http://ztonebv.com/MUKG#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT   DISTINCT  ?g ?cuiG ?e ?a 
+WHERE{  
+{ mukg:Serotonin rdfs:label ?a.
+?s1 	mukg:hasNeurotransmitter mukg:Serotonin;
+                	mukg:hasGutMicrobiota ?g;
+                	mukg:hasEffectType ?e.
+    		?g umls:cui ?cuiG.}
+UNION
+{mukg:Norepinephrine rdfs:label ?a.
+?s2 	mukg:hasNeurotransmitter mukg:Norepinephrine;
+                	mukg:hasGutMicrobiota ?g;
+                	mukg:hasEffectType ?e.
+?g umls:cui ?cuiG.}
+FILTER (lang(?a)='en')
+}
+
+Test Case 3 SPARQL Query
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX drugbank: <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/>
+PREFIX dc: <http://purl.org/dc/1.1#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX dbpedia3: <http://dbpedia.org/property/>
+PREFIX owl: <http://www.w3.org/2002/07/owl#> 
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+PREFIX pubmed: <http://linkedlifedata.com/resource/pubmed/> 
+PREFIX ctec: <http://eurecaproject.eu/ctec/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX mukg: <http://ztonebv.com/MUKG#>
+PREFIX meshv: <http://id.nlm.nih.gov/mesh/vocab#>
+PREFIX mesh: <http://id.nlm.nih.gov/mesh/>
+
+SELECT   DISTINCT  ?g ?m ?n
+WHERE{  
+{?r1 	mukg:hasMentalDisorder mukg:Cognition-disorders;
+		mukg:hasNeurotransmitter ?n.
+?s 	mukg:hasNeurotransmitter ?n;
+mukg:hasGutMicrobiota ?g;
+		mukg:hasModulateType ?m.}
+	FILTER EXISTS
+	{?r2 	mukg:hasMentalDisorder mukg:Personality-disorder;
+		mukg:hasNeurotransmitter ?n.}
+    	FILTER EXISTS
+	{?r3 	mukg:hasMentalDisorder mukg:Sex-behavior-disorder;
+		mukg:hasNeurotransmitter ?n.}
+}
+
+Test Case 4 SPARQL Query
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX drugbank: <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/>
+PREFIX dc: <http://purl.org/dc/1.1#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX dbpedia3: <http://dbpedia.org/property/>
+PREFIX owl: <http://www.w3.org/2002/07/owl#> 
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+PREFIX pubmed: <http://linkedlifedata.com/resource/pubmed/> 
+PREFIX ctec: <http://eurecaproject.eu/ctec/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX mukg: <http://ztonebv.com/MUKG#>
+PREFIX meshv: <http://id.nlm.nih.gov/mesh/vocab#>
+PREFIX mesh: <http://id.nlm.nih.gov/mesh/>
+PREFIX umls: <http://bioportal.bioontology.org/ontologies/umls#>
+
+SELECT   DISTINCT ?l ?g ?d 
+WHERE{
+{?r 	mukg:hasNeurotransmitter mukg:Histamine;
+        		mukg:hasMentalDisorder ?d.
+    	?s  	mukg:hasNeurotransmitter mukg:Histamine;
+        		mukg:hasGutMicrobiota ?g;
+    		mukg:hasModulateType ?m;
+     		mukg:hasEvidenceLevel ?l.}
+FILTER (?l<='b')
+}
